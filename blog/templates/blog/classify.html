@@ -1,0 +1,316 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles %}
+
+ <html>
+    <head>
+        <title>Klasifikasi</title>
+        <style>      
+         #myInput{
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            width: 20%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+        }
+        #myTable{
+            border-collapse: collapse;
+        }
+
+        #myTable th, #myTable td{
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #myTable tr:nth-child(even){
+            background-color: #f2f2f2
+        }
+
+        #myTable th {
+            text-align: center;
+            background-color: #00BFFF;
+            color: white;
+        }
+        </style>
+
+    <!-- jquery -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.4.1/css/buttons.dataTables.min.css">
+        <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"> -->
+        <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"> -->
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <!-- <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script> -->
+        <!-- <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script> -->
+        <!-- <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script> -->
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
+
+        
+    </head>
+    <body>
+        {% block content %}
+ <!-- 
+        ================================================== 
+            Global Page Section Start
+        ================================================== -->
+        <section class="global-page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="block">
+                            <h2>Sentiment Analysis</h2>
+                            <ol class="breadcrumb">
+                                <li>
+                                    <a href="{% url 'home' %}">
+                                        <i class="ion-ios-home"></i>
+                                        Home 
+                                    </a>
+                                </li>
+                                <li class="active">Sentiment Analysis</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="company-description">
+        <div class="vertical-center sun">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="action">
+                            <h3>Cara Kerja dan Petunjuk Penggunaan Sentiment Analysis:<br><br>
+•   Klik Button Crawling and Classify Tweets.<br>
+•   Sistem akan mengumpulkan tweets dan otomatis mengklasifisikasikan tweets kedalam sentimen.<br>
+•   Waktu Crawling and Classify Tweets kurang lebih 3 menit. Harap menunggu.<br>
+•   Hasil dari Crawling and Classify Tweets akan ditampilkan dalam bentuk tabel dan pie-chart.<br>
+•   Gunakan fungsi search pada tabel untuk mencari kata atau kalimat yang anda inginkan.<br>
+•   Klik Button Save the results untuk menyimpan hasil Crawling and Classify Tweets dalam bentuk PDF.<br></h3>
+                        <form action="/tweets/" method="post">{% csrf_token %}
+                            <div class="text-center">
+                                <button style="margin-left: 5px; margin-top: 25px;" class="btn btn-lg btn-primary">Crawling and Classify Tweets</button>
+                            </div>
+                        </form>
+                        </div>
+                        <div class="action">
+                            <div id="analysis-result">
+                                <!-- <div class="row text-center">
+                                <div class="col-md-4 col-md-offset-4"> -->
+                                <ul class="nav nav-pills">
+                                    <li class="active"><a data-toggle="pill" href="#home">Table Form</a></li>
+                                    <li><a data-toggle="pill" href="#menu1">Chart Form</a></li>
+                                </ul>
+                                <!-- <a class="btn btn-primary" data-toggle="pill" href="#home">Home</a>
+                                <a class="btn btn-primary" data-toggle="pill" href="#menu1">Chart Form</a>
+                                </div>
+                                </div> -->
+
+                                <div class="tab-content">
+                                    <div id="home" class="tab-pane fade in active"><br>
+                                        <table id="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
+                                          <thead>
+                                            <tr>
+                                                <th class="text-center">Tweets</th>
+                                                <th class="text-center">Sentiment</th>
+                                            </tr>
+                                          </thead>
+                                            {% if obj %}
+                                            <script>
+                                                $(document).ready(function () {
+                                                    $('#analysis-result').show();
+                                                    $('#classify-btn').hide();
+                                                });
+                                            </script>
+                                            {% else %}
+                                            <script>
+                                                $(document).ready(function () {
+                                                    $('#analysis-result').hide();
+                                                });
+                                            </script>
+                                            {% endif %}
+                                            <tbody>
+                                            {% for item in obj %}
+                                                <tr>
+                                                    <td>{{ item.sentiment }}</td>
+                                                    <td>{{ item.classification }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <!-- <script>
+                                            $(document).ready(function() {
+                                                $('#example').DataTable( {
+                                                    dom: 'Bfrtip',
+                                                    buttons: [
+                                                        'print'
+                                                    ]
+                                                } );
+                                            } );
+                                        </script> -->
+                                        <script type="text/javascript">
+                                            $(document).ready(function() {
+                                                $('#example').DataTable( {
+                                                    dom: 'Bfrtip',
+                                                    buttons: [
+                                                        {
+                                                            extend: 'print',
+                                                            text:      '<i class="fa fa-file-pdf-o"></i>Save the results',
+                                                            message: 'Hasil Klasifikasi Tweets'
+                                                        }
+                                                    ]
+                                                } );
+                                            } );
+                                        </script>
+                                        <!-- <script>
+                                            $(document).ready(function(){
+                                                $('#example').DataTable();
+                                            });
+                                        </script> -->
+                                    </div>
+                                    <div id="menu1" class="tab-pane fade">
+                                        <!-- <h3>Pie Chart Sentimen Analisis</h3> -->
+                                        
+                                            <div class="inner" id="piechart"></div>
+                                     
+                                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function simpanHasil() {
+            window.print();
+        }
+        function ShowTableChart(){
+            var x = document.getElementById('myDIV');
+            if (x.style.display === 'none') {
+                x.style.display = 'block';
+            } else {
+                x.style.display = 'none';
+            }
+        }
+        function myFunction() {
+            var input, filter, table, tr, td, td1, i, pos_count, neg_count, net_count;
+            pos_count = 0;
+            neg_count = 0;
+            net_count = 0;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("example");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                td1 = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+                        if (td1.innerHTML === "Positif") {
+                            pos_count += 1;
+                            //window.print(pos_count);
+                            //document.write(pos_count);
+
+                        } else if (td1.innerHTML === "Negatif"){
+                            neg_count += 1;
+                        } else {
+                            net_count += 1;
+                        }
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+            // Load google charts
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            // Draw the chart and set the chart values
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Task', 'Hours per Day'],
+                    ['Sentiment Positif', pos_count],
+                    ['Sentiment Negatif', neg_count],
+                    ['Sentimen Netral', net_count]
+                ]);
+
+                // Optional; add a title and set the width and height of the chart
+                var options = {'title':'Pie Chart Hasil Klasifikasi Tweets', 'width':550, 'height':400};
+
+                // Display the chart inside the <div> element with id="piechart"
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
+            }
+            document.write(neg_count);
+        }
+    </script>
+
+
+{#        <div id="piechart" class="col-md-4"></div>#}
+
+{#    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>#}
+
+    <script type="text/javascript">
+
+        var table, pos_count, neg_count, net_count;
+        pos_count = 0;
+        neg_count = 0;
+        net_count = 0;
+        table = document.getElementById("example");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                if (td.innerHTML === "Positif") {
+                    pos_count += 1;
+                } else if (td.innerHTML === "Negatif") {
+                    neg_count += 1;
+                } else {
+                    net_count += 1;
+                }
+            }
+        }
+
+        // Load google charts
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Draw the chart and set the chart values
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Sentiment', 'Total'],
+                ['Sentiment Positif', pos_count],
+                ['Sentiment Negatif', neg_count],
+                ['Sentiment Netral', net_count]
+            ]);
+
+            // Optional; add a title and set the width and height of the chart
+            var options = {'title':'Pie Chart Hasil Klasifikasi Tweets', 'width':900, 'height':600};
+
+            // Display the chart inside the <div> element with id="piechart"
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    </script>
+
+    <!--<div class="column">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>-->
+    <!--<div class="clearfix"></div>-->
+    {% endblock %}
+</body>
+</html>

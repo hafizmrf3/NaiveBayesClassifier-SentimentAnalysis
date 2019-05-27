@@ -1,0 +1,71 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles %}
+
+<html>
+	<head>
+		<title>Klasifikasi</title>
+	</head>
+	<body>
+		{% block content %}
+		<!--
+        ==================================================
+        Slider Section Start
+        ================================================== -->
+        <section id="hero-area" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="block wow fadeInUp" data-wow-delay=".3s">
+                            
+                            <!-- Slider -->
+                            <section class="cd-intro">
+                                <h1 class="wow fadeInUp animated cd-headline slide" data-wow-delay=".4s" >
+                                <span>WELCOME TO SENTWEETS!: GO-JEK ANALYZER</span><br>
+                                <span class="cd-words-wrapper">
+                                    <b class="is-visible">SENTIMENT</b>
+                                    <b>ANALYSIS</b>
+                                    <b>GO-JEK</b>
+                                </span> 
+                                </h1>
+                                </section> <!-- cd-intro -->
+                                <!-- /.slider -->
+                                <h2 class="wow fadeInUp animated" data-wow-delay=".6s" >
+                                    Aplikasi ini berfungsi untuk menganalisa tweet-tweet tentang layanan go-jek Indonesia.<br>
+                                    Tweet yang dianalisa akan diklasifikasi kedalam sentimen tweet positif, negatif, atau netral.<br>
+                                    Hasil Klasifikasi akan ditampilkan dalam bentuk tabel dan pie-chart.<br><br>
+                                    Pindah ke Halaman Sentiment Analysis untuk memulai!.
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section><!--/#main-slider-->
+            <!--
+            ==================================================
+            Slider Section Start
+            ================================================== 
+            <section id="about">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="block wow fadeInLeft" data-wow-delay=".3s" data-wow-duration="500ms" style="text-align: justify;">
+                                <h2>
+                                SENTWEETS!: GO-JEK ANALYZER
+                                </h2>
+                                <p>
+                                    Banyak tweets di Twitter mengenai layanan GO-JEK, tweets yang dikirimkan masyarakat atau pengguna Twitter ini mengandung sentimen. Di Twitter sentimen bisa dijadikan alat ukur untuk mengetahui seberapa berpengaruh suatu obyek baik pengaruh positif, maupun pengaruh negatif. Dengan banyaknya tweets yang masuk perlu diterapkannya metode analisa untuk setiap tweets dan mengolahnya menjadi informasi yang dibutuhkan untuk memperbaiki dan meningkatkan layanan GO-JEK.
+                                </p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="block wow fadeInRight" data-wow-delay=".3s" data-wow-duration="500ms">
+                                <img src="{% static 'images/2.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> <!-- /#about -->
+            {% endblock %}
+	</body>
+</html>
