@@ -1,2 +1,2 @@
 # NaiveBayesClassifier-SentimentAnalysis
-Sentiment analysis on Tiket.com's tweets using NaiveBayesClassifier 
+Sentiment analysis on @gojekindonesia 's tweets using NaiveBayesClassifier 
